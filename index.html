@@ -237,25 +237,32 @@
         }
         
         @media (max-width: 768px) {
+            header {
+                position: relative; /* Remove the fixed position on mobile */
+            }
+            
             .nav-container {
-                flex-direction: column;
-                align-items: center;
+                display: flex;
+                flex-direction: row; /* Keep horizontal layout */
+                flex-wrap: wrap; /* Allow wrapping to multiple rows */
+                justify-content: center; /* Center the nav items */
             }
             
             nav a {
-                margin: 5px 0;
-                display: block;
-                width: 100%;
-                text-align: center;
+                margin: 2px;
+                padding: 8px 10px; /* Smaller padding */
+                font-size: 0.9rem; /* Smaller font size */
+                display: inline-block;
+                width: auto; /* Allow natural width */
             }
             
             main {
-                margin-top: 200px;
+                margin-top: 30px; /* Reduce top margin since header is not fixed */
             }
             
             section {
                 padding: 20px;
-                scroll-margin-top: 200px;
+                scroll-margin-top: 20px; /* Reduce scroll margin since header is not fixed */
             }
             
             .services {
@@ -265,7 +272,42 @@
             .company-name {
                 font-size: 1.2rem;
             }
+            
+            /* Add this to make logo smaller on mobile */
+            .logo {
+                height: 40px;
+                margin-right: 10px;
+            }
         }
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color); /* Use your primary color */
+            color: white;
+            padding: 10px 15px; /* Adjust padding for text */
+            border-radius: 25px; /* Slightly rounded corners */
+            font-size: 14px; /* Smaller font size */
+            font-weight: bold; /* Make text bold */
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, background-color 0.3s;
+            z-index: 2000; /* Ensure it's above other elements */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+        .scroll-top-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top-btn:hover {
+            background-color: var(--secondary-color); /* Change color on hover */
+        }
+        
     </style>
 </head>
 <body>
@@ -455,7 +497,8 @@
     <footer>
         <p>&copy; 2025 Kalobe Microfinance Empowerment Platform Limited. All rights reserved.</p>
     </footer>
-    
+    <div class="scroll-top-btn" id="scrollTopBtn">Go to Top</div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const contactForm = document.getElementById('contactForm');
@@ -502,6 +545,29 @@
                 });
             });
         });
+        // Scroll to top button
+const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+// Show button when user scrolls down 200px (reduced from 300px)
+window.addEventListener('scroll', function() {
+    if (window.pageYOffset > 200) {
+        scrollTopBtn.classList.add('visible');
+    } else {
+        scrollTopBtn.classList.remove('visible');
+    }
+});
+
+// Scroll to top when button is clicked
+scrollTopBtn.addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+    console.log('Scroll to top clicked'); // Add this for debugging
+});
+
+// Add this to check if the button exists
+console.log('Scroll button element:', scrollTopBtn);
     </script>
 </body>
 </html>

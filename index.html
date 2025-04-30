@@ -464,7 +464,7 @@
             
         <div class="contact-form">
     <!-- Replace the URL below with your actual Google Form URL -->
-    <form id="contactForm" method="POST" action="https://docs.google.com/forms/d/e/1FAIpQLSfEae39NpthjY-fIuFwh5cSdl9XXrOb5TmmAkFqEjh5aIkKlg/viewform?embedded=true" target="_blank">
+    <form id="contactForm" method="POST" action="https://docs.google.com/forms/d/e/1FAIpQLSfEae39NpthjY-fIuFwh5cSdl9XXrOb5TmmAkFqEjh5aIkKlg/formResponse" target="_blank">
         <div class="form-group">
             <label for="name">Your Name</label>
             <!-- Replace entry.123456789 with your actual entry ID for the name field -->
@@ -504,70 +504,55 @@
     </footer>
     <div class="scroll-top-btn" id="scrollTopBtn">Go to Top</div>
 
-    <script>
-     document.addEventListener('DOMContentLoaded', function() {
-        const contactForm = document.getElementById('contactForm');
-        const successMessage = document.getElementById('successMessage');
+ <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const contactForm = document.getElementById('contactForm');
+    const successMessage = document.getElementById('successMessage');
+    
+    // SINGLE event listener for form submission
+    contactForm.addEventListener('submit', function(e) {
+        // Form validation
+        const message = document.getElementById('message').value;
+        if (message.trim() === '') {
+            alert('Please enter your message before submitting.');
+            e.preventDefault();
+            return;
+        }
         
-        contactForm.addEventListener('submit', function(e) {
-            // This will let the form submit to Google Forms
+        // Don't prevent default here - this allows the form to submit to Google Forms
+        // Show success message after a delay
+        setTimeout(function() {
+            contactForm.style.display = 'none';
+            successMessage.style.display = 'block';
+        }, 1000);
+    });
+    
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('nav a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
             
-            // Show success message after form submission
-            setTimeout(function() {
-                contactForm.style.display = 'none';
-                successMessage.style.display = 'block';
-            }, 1000);
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            window.scrollTo({
+                top: targetElement.offsetTop - 140,
+                behavior: 'smooth'
+            });
+            
+            // Update active link
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            this.classList.add('active');
         });
     });
-        document.addEventListener('DOMContentLoaded', function() {
-            const contactForm = document.getElementById('contactForm');
-            const successMessage = document.getElementById('successMessage');
-            
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const message = document.getElementById('message').value;
-                
-                // Form validation
-                if (message.trim() === '') {
-                    alert('Please enter your message before submitting.');
-                    return;
-                }
-                
-                // Here you would typically send the form data to a server
-                // For now, we'll just show the success message
-                contactForm.style.display = 'none';
-                successMessage.style.display = 'block';
-                
-                // Reset the form
-                contactForm.reset();
-            });
-            
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('nav a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 140,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update active link
-                    document.querySelectorAll('nav a').forEach(link => {
-                        link.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
-            });
-        });
-        // Scroll to top button
+});
+
+// Scroll to top button
 const scrollTopBtn = document.getElementById('scrollTopBtn');
 
-// Show button when user scrolls down 200px (reduced from 300px)
+// Show button when user scrolls down 200px
 window.addEventListener('scroll', function() {
     if (window.pageYOffset > 200) {
         scrollTopBtn.classList.add('visible');
@@ -582,7 +567,7 @@ scrollTopBtn.addEventListener('click', function() {
         top: 0,
         behavior: 'smooth'
     });
-    console.log('Scroll to top clicked'); // Add this for debugging
+    console.log('Scroll to top clicked');
 });
 
 // Add this to check if the button exists
